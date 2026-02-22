@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipes — Aggie Kitchen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-circle"><img src="static/assets/pantry_logo.png" alt="Pantry Logo"></div>
+    <div class="logo-text">
+      <span class="logo-sub">ASUCD</span>
+      <span class="logo-name">The Pantry</span>
+    </div>
+  </div>
+  <div class="sidebar-badge">✦ Aggie Kitchen</div>
+  <ul class="sidebar-nav">
+    <li class="nav-item" data-label="Fridge &amp; Pantry" onclick="location.href='/fridge'">
+      <span class="nav-icon">🧊</span>
+      <span class="nav-label">Fridge &amp; Pantry</span>
+    </li>
+    <li class="nav-item active" data-label="Recipes" onclick="location.href='/recipes'">
+      <span class="nav-icon">🍳</span>
+      <span class="nav-label">Recipes</span>
+    </li>
+  </ul>
+  <div class="sidebar-footer">
+    <a href="https://thepantry.ucdavis.edu/" target="_blank" class="sidebar-link">🔗 The Pantry Site</a>
+    <p>Free · Confidential<br>Just swipe your ID</p>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main-area">
+
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">What to Cook</div>
+      <h1 class="page-title">Recipes &amp; Ingredients</h1>
+    </div>
+    <a href="/fridge" class="btn btn-outline">← Back to Fridge</a>
+  </div>
+
+  <!-- SIDE BY SIDE: Recipes + Missing -->
+  <div class="two-col">
+
+    <!-- ══ RECIPES ══ -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon coral">🍳</div>
+        <div>
+          <div class="card-title">Suggested Recipes</div>
+          <div class="card-subtitle">Expiring ingredients are prioritized first</div>
+        </div>
+      </div>
+
+      <div class="recipe-subtabs">
+        <button class="recipe-subtab active">Use What I Have</button>
+        <button class="recipe-subtab">From Recipe Book</button>
+        <button class="recipe-subtab">AI Generated</button>
+      </div>
+
+      <div id="recipe-list">
+        <div class="empty-state">Loading recipes...</div>
+      </div>
+
+      <div class="generate-area">
+        <div style="font-size:26px;">✨</div>
+        <h3>Need more ideas?</h3>
+        <p>Generate recipes from your fridge using AI. Expiring items are always prioritized.</p>
+        <button class="generate-btn" id="generate-btn">Generate Recipes for My Fridge</button>
+        <span style="font-size:11px; color:var(--muted);">Powered by Claude AI</span>
+      </div>
+    </div>
+
+    <!-- ══ MISSING INGREDIENTS ══ -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon sage">🗺️</div>
+        <div>
+          <div class="card-title">What You Still Need</div>
+          <div class="card-subtitle">Click any recipe to see what to source</div>
+        </div>
+      </div>
+
+      <div id="missing-empty" class="empty-state">
+        Pick a recipe on the left and we'll show you exactly what to grab — and whether The Pantry has it this week.
+      </div>
+
+      <div id="missing-content" style="display:none;">
+        <div class="selected-recipe-label" id="selected-recipe-label"></div>
+
+        <div class="section-label">Available at The Pantry 🌾</div>
+        <div id="missing-pantry-list"></div>
+
+        <div class="section-label" style="margin-top:18px;">Pick Up at the Store 🛒</div>
+        <div id="missing-store-list"></div>
+
+        <div id="missing-tip" style="display:none; margin-top:20px; padding:12px 14px; background:rgba(94,127,100,0.07); border-radius:10px; font-size:12px; color:var(--muted); line-height:1.6; border:1px solid rgba(94,127,100,0.15);"></div>
+      </div>
+    </div>
+
+  </div><!-- /two-col -->
+
+</div><!-- /main-area -->
+
+<script src="/static/shared.js"></script>
+<script src="/static/recipes.js"></script>
+</body>
+</html>

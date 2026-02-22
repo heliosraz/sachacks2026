@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fridge &amp; Pantry — Aggie Fridge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-circle"><img src="static/assets/pantry_logo.png" alt="Pantry Logo"></div>
+    <div class="logo-text">
+      <span class="logo-sub">ASUCD</span>
+      <span class="logo-name">The Pantry</span>
+    </div>
+  </div>
+  <div class="sidebar-badge">✦ Aggie Fridge</div>
+  <ul class="sidebar-nav">
+    <li class="nav-item active" data-label="Fridge &amp; Pantry" onclick="location.href='/fridge'">
+      <span class="nav-icon">🧊</span>
+      <span class="nav-label">Fridge &amp; Pantry</span>
+    </li>
+    <li class="nav-item" data-label="Recipes" onclick="location.href='/recipes'">
+      <span class="nav-icon">🍳</span>
+      <span class="nav-label">Recipes</span>
+    </li>
+  </ul>
+  <div class="sidebar-footer">
+    <a href="https://thepantry.ucdavis.edu/" target="_blank" class="sidebar-link">🔗 The Pantry Site</a>
+    <p>Free · Confidential<br>Just swipe your ID</p>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main-area">
+
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">Your Kitchen</div>
+      <h1 class="page-title">Fridge &amp; Pantry Stock</h1>
+    </div>
+    <a href="/recipes" class="btn btn-coral">See Recipes →</a>
+  </div>
+
+  <div class="two-col">
+
+    <!-- ══ FRIDGE ══ -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon orange">🧊</div>
+        <div>
+          <div class="card-title">My Fridge</div>
+          <div class="card-subtitle">Tap an item to consume or toss</div>
+        </div>
+      </div>
+
+      <div class="urgency-alert" id="urgency-alert" style="display:none;">
+        <div class="urgency-alert-icon">⚠️</div>
+        <div class="urgency-alert-text"></div>
+      </div>
+
+      <div id="fridge-list"></div>
+
+      <!-- ADD ITEM FORM -->
+      <div class="add-form">
+        <div class="add-form-title">Add an Item</div>
+
+        <div class="add-form-row">
+          <div class="form-field" style="flex:2;">
+            <label>Item Name</label>
+            <input type="text" id="add-name" placeholder="e.g. Greek yogurt">
+          </div>
+          <div class="form-field" style="flex:0 0 auto;">
+            <label>Emoji</label>
+            <button class="emoji-display" id="emoji-btn">🛒</button>
+          </div>
+        </div>
+
+        <div class="add-form-row">
+          <div class="form-field">
+            <label>Food Group</label>
+            <select id="add-category">
+              <option value="dairy">🥛 Dairy</option>
+              <option value="produce">🥦 Produce</option>
+              <option value="meat">🍗 Meat</option>
+              <option value="bread">🍞 Bread</option>
+              <option value="canned">🫘 Canned</option>
+              <option value="dry" selected>🍝 Dry Goods</option>
+              <option value="frozen">🧊 Frozen</option>
+              <option value="other">🛒 Other</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Expiration Date</label>
+            <input type="date" id="add-expiry">
+          </div>
+        </div>
+
+        <button class="btn btn-coral btn-full" id="add-btn">+ Add to Fridge</button>
+      </div>
+
+      <!-- EMOJI PICKER -->
+      <div class="emoji-picker" id="emoji-picker">
+        <div class="emoji-grid" id="emoji-grid"></div>
+      </div>
+    </div>
+
+    <!-- ══ PANTRY STOCK ══ -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon sand">🏪</div>
+        <div>
+          <div class="card-title">Pantry Stock This Week</div>
+          <div class="card-subtitle">Free, no questions asked</div>
+        </div>
+      </div>
+
+      <div class="section-label">✓ Available Now</div>
+      <div class="stock-grid" id="stock-avail">
+        <div class="empty-state">Loading...</div>
+      </div>
+
+      <div class="section-label" style="margin-top:16px;">✗ Out This Week</div>
+      <div class="stock-grid" id="stock-out"></div>
+
+      <a href="https://abrupt-nightshade-be6.notion.site/ASUCD-Pantry-443afebccb974648b313b71a9815001e"
+         target="_blank" class="pantry-schedule-link">
+        📅 View Weekly Walk-In Menu Schedule →
+      </a>
+    </div>
+
+  </div><!-- /two-col -->
+</div><!-- /main-area -->
+
+<!-- CONSUME / TOSS MODAL -->
+<div class="modal-overlay" id="action-modal" style="display:none;">
+  <div class="modal">
+    <div class="modal-emoji" id="modal-emoji">🛒</div>
+    <div class="modal-name" id="modal-name"></div>
+    <div class="modal-subtitle">What would you like to do with this?</div>
+    <div class="modal-actions">
+      <button class="btn btn-sage" id="modal-consume">✓ Consumed</button>
+      <button class="btn btn-red"  id="modal-toss">🗑 Toss</button>
+    </div>
+    <button class="modal-cancel" id="modal-cancel">Cancel</button>
+  </div>
+</div>
+
+<script src="/static/shared.js"></script>
+<script src="/static/fridge.js"></script>
+</body>
+</html>
