@@ -11,7 +11,7 @@ A lot of the front end was generated using Claude. This made it easy to match th
 
 ## How to run
 With a little bit of set up, you should be able to run a demo of this on a browser.
- 1.
+ 1. Clone this repository.
  2. Install uv and run the following command in the directory
         ``` uv sync```
      
@@ -31,4 +31,5 @@ Only to name a few:
 - gamifying reducing food waste and competition with friends
 
 I would love to incorporate Aggie Kitchen into the existing Pantry website family and expand to other food instituitons.
+
 
