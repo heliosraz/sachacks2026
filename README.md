@@ -13,9 +13,10 @@ A lot of the front end was generated using Claude. This made it easy to match th
 With a little bit of set up, you should be able to run a demo of this on a browser.
  1.
  2. Install uv and run the following command in the directory
-     ``` uv sync```
+        ``` uv sync```
+     
  3. Run the following command and open it up on a browser at <http://localhost:8000>:
-``` uv run fastapi dev app/main.py ```
+        ``` uv run fastapi dev app/main.py ```
 
 ## Challenges we ran into
 I am frankly unfamiliar with all things web development. Even with LLM resources, this project required me to dissect and debug many of the API functionality.
@@ -30,3 +31,4 @@ Only to name a few:
 - gamifying reducing food waste and competition with friends
 
 I would love to incorporate Aggie Kitchen into the existing Pantry website family and expand to other food instituitons.
+
