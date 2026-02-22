@@ -75,7 +75,7 @@ function initAddForm() {
     addBtn.disabled = true;
     try {
       await api.addItem({
-        name,
+        name: name,
         category:    catIn.value,
         date_added: new Date(),
         expiry_date: dateIn.value,

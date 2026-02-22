@@ -8,7 +8,6 @@ class FoodItemSchema(BaseModel):
     category: str
     date_added: Optional[str] = None
     expiry_date: Optional[str] = None
-    is_used: bool = False
     source: str = "pantry"
 
 

@@ -59,6 +59,7 @@ class CoopDB:
         fridge = self.fridge.search(self.Q.session_id == session_id)
         curr_recipe = Recipe(**recipe.dict())
         matched, missing, score = curr_recipe.match(fridge)
+        print({"matched": matched, "missing": missing, "score": score})
         return {"matched": matched, "missing": missing, "score": score}
 
     def get_all_recipes(self) -> list:

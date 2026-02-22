@@ -62,7 +62,14 @@ function openRecipeModal(recipe, matched, missing) {
           ${m.quantity ? `<span class="missing-source source-store">${m.quantity} ${m.measure ?? ''}</span>` : ''}
         </div>`).join('')
     : '<div style="color:var(--sage);font-size:13px;">✓ You have everything!</div>';
-
+  // const foundHTML = matched?.length
+  //   ? matched.map(m => `
+  //       <div style="color:var(--sage);font-size:13px;" class="missing-row missing-store">
+  //         <span class="found-icon">🧊</span>
+  //         ${m.item}
+  //         ${m.quantity ? `<span class="found-source source-store">${m.quantity} ${m.measure ?? ''}</span>` : ''}
+  //       </div>`).join('')
+  //   : '<div style="color:var(--sage);font-size:13px;"></div>';
   const modal = document.createElement('div');
   modal.id = 'recipe-modal';
   modal.className = 'modal-overlay';

@@ -47,9 +47,14 @@ class PantryItem(Item):
     """Item sourced from The Pantry."""
 
     def __init__(
-        self, name: str, category: str, date_added: str = None, availability: str = None
+        self,
+        name: str,
+        category: str,
+        date_added: str = None,
+        expiry_date: str = None,
+        availability: str = None,
     ):
-        super().__init__(name, category, date_added)
+        super().__init__(name, category, date_added, expiry_date=expiry_date)
         self.availability = availability
 
 
@@ -83,13 +88,16 @@ class Recipe:
         self.preparation = preparation
 
     def match(self, fridge_items: list) -> float:
-        fridge_names = Counter([i["item"].lower() for i in fridge_items])
+        fridge_names = Counter([i["name"].lower() for i in fridge_items])
         score = 0
         matched = []
         missing = []
+        print(self.ingredients)
         for t in self.ingredients:
             for name in fridge_names:
-                if t["item"] in name:
+                if not t["quantity"]:
+                    t["quantity"] = 1
+                if t["item"] in name or name in t["item"]:
                     have = fridge_names[name]
                     left = have - t["quantity"]
                     if left >= 0:
@@ -101,7 +109,7 @@ class Recipe:
                         score += have
                         missing_item = {**t, "quantity": abs(left)}
                         missing.append(missing_item)
-                        break
+                    break
             else:
                 missing_item = t
                 missing.append(missing_item)
