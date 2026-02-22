@@ -1,3 +1,5 @@
+let cachedStock = [];
+
 // ===================== RECIPE SUBTABS (filter only) =====================
 document.querySelectorAll('.recipe-subtab').forEach(tab => {
   tab.addEventListener('click', () => {
@@ -6,6 +8,18 @@ document.querySelectorAll('.recipe-subtab').forEach(tab => {
     // TODO: filter by source when backend supports it
   });
 });
+
+// ===================== PANTRY STOCK =====================
+
+async function loadStock() {
+  const availGrid = document.getElementById('stock-avail');
+  try {
+    const items = await api.getStock();
+    cachedStock = items;
+  } catch {
+    availGrid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">Could not load stock.</div>';
+  }
+}
 
 // ===================== RECIPES =====================
 async function renderRecipeCard(recipe) {
@@ -62,14 +76,15 @@ function openRecipeModal(recipe, matched, missing) {
           ${m.quantity ? `<span class="missing-source source-store">${m.quantity} ${m.measure ?? ''}</span>` : ''}
         </div>`).join('')
     : '<div style="color:var(--sage);font-size:13px;">✓ You have everything!</div>';
-  // const foundHTML = matched?.length
-  //   ? matched.map(m => `
-  //       <div style="color:var(--sage);font-size:13px;" class="missing-row missing-store">
-  //         <span class="found-icon">🧊</span>
-  //         ${m.item}
-  //         ${m.quantity ? `<span class="found-source source-store">${m.quantity} ${m.measure ?? ''}</span>` : ''}
-  //       </div>`).join('')
-  //   : '<div style="color:var(--sage);font-size:13px;"></div>';
+  console.log(matched)
+  const foundHTML = matched?.length
+    ? matched.map(m => `
+        <div style="color:var(--sage);font-size:13px;" class="missing-row missing-store">
+          <span class="found-icon">🧊</span>
+          ${m.item}
+          ${m.quantity ? `<span class="found-source source-store">${m.quantity} ${m.measure ?? ''}</span>` : ''}
+        </div>`).join('')
+    : '<div style="color:var(--sage);font-size:13px;"></div>';
   const modal = document.createElement('div');
   modal.id = 'recipe-modal';
   modal.className = 'modal-overlay';
@@ -80,6 +95,7 @@ function openRecipeModal(recipe, matched, missing) {
 
       <div class="section-label" style="margin-top:16px;">Ingredients</div>
       <div id="recipe-modal-missing">${missingHTML}</div>
+      <div id="recipe-modal-found">${foundHTML}</div>
 
       <div class="section-label" style="margin-top:16px;">Steps</div>
       <ol class="recipe-steps">${steps}</ol>
@@ -111,7 +127,7 @@ async function loadRecipes() {
 }
 
 // ===================== MISSING INGREDIENTS =====================
-function populateMissing(recipe, missing) {
+async function populateMissing(recipe, missing) {
   const emptyState  = document.getElementById('missing-empty');
   const content     = document.getElementById('missing-content');
   const pantryList  = document.getElementById('missing-pantry-list');
@@ -137,11 +153,19 @@ function populateMissing(recipe, missing) {
   }
 
   let pantryCount = 0;
+  console.log(cachedStock)
   missing.forEach(item => {
-    const isPantry = item.pantry_available;
+    const isPantry = cachedStock.some(stockItem =>
+    (item.item.toLowerCase().includes(stockItem.item.toLowerCase()) ||
+    stockItem.item.toLowerCase().includes(item.item.toLowerCase())) && stockItem.status!="out"
+    );
+    console.log(item)
+    console.log(isPantry)
+
     const name = item.item ?? item.name ?? item;  // your missing items use "item" not "name"
     const el = document.createElement('div');
     el.className = `missing-row ${isPantry ? 'missing-pantry' : 'missing-store'}`;
+    console.log(el.className)
     el.innerHTML = `
       <span class="missing-icon">🛒</span>
       ${name}
@@ -189,4 +213,5 @@ document.getElementById('generate-btn').addEventListener('click', async function
 // ===================== BOOT =====================
 document.addEventListener('DOMContentLoaded', () => {
   loadRecipes();
+  Promise.all([loadStock()]);
 });
