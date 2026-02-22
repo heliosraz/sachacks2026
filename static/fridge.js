@@ -28,7 +28,6 @@ function renderFridgeItem(item) {
 }
 
 async function loadFridge() {
-  api.getFridge().then(d => console.log(d)).catch(e => console.error(e))
   const list = document.getElementById('fridge-list');
   list.innerHTML = '<div class="empty-state">Loading...</div>';
   try {
@@ -157,10 +156,12 @@ async function loadStock() {
 document.addEventListener('DOMContentLoaded', () => {
   initAddForm();
   initModal();
+
+  // ← move date init inside here
+  const dateIn = document.getElementById('add-expiry');
+  const d = new Date(); d.setDate(d.getDate() + 7);
+  dateIn.value = d.toISOString().split('T')[0];
+  dateIn.min   = new Date().toISOString().split('T')[0];
+
   Promise.all([loadFridge(), loadStock()]);
 });
-// Default expiry: 7 days out
-const dateIn  = document.getElementById('add-expiry');
-const d = new Date(); d.setDate(d.getDate() + 7);
-dateIn.value = d.toISOString().split('T')[0];
-dateIn.min   = new Date().toISOString().split('T')[0];

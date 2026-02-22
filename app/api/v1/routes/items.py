@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.schemas import FoodItemSchema, RecipeSchema
 from app.dependencies import get_db
+from datetime import datetime
 
 
 router = APIRouter()
@@ -8,7 +9,7 @@ router = APIRouter()
 from app.models import PantryItem
 
 
-@router.post("/items/{SESSION_ID}")
+@router.post("/items/{session_id}")
 def add_item(session_id: str, item: FoodItemSchema, db=Depends(get_db)):
     food = PantryItem(
         item.name,
@@ -20,12 +21,21 @@ def add_item(session_id: str, item: FoodItemSchema, db=Depends(get_db)):
     return {"status": "added", "item": food.to_dict()}
 
 
-@router.get("/items/{SESSION_ID}", response_model=list[FoodItemSchema])
+@router.get("/items/{session_id}")
 def get_fridge(session_id: str, db=Depends(get_db)):
-    return db.get_fridge(session_id)
+    items = db.get_fridge(session_id)
+    for item in items:
+        if item.get("expiry_date"):
+            days = (
+                datetime.strptime(item["expiry_date"], "%Y-%m-%d") - datetime.now()
+            ).days
+            item["urgency"] = "urgent" if days <= 2 else "soon" if days <= 6 else "good"
+        else:
+            item["urgency"] = "good"
+    return items
 
 
-@router.delete("/items/{SESSION_ID}/{item_name}")
+@router.delete("/items/{session_id}/{item_name}")
 def remove_item(session_id: str, item_name: str, db=Depends(get_db)):
     db.remove_fridge_item(session_id, item_name)
 
